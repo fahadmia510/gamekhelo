@@ -3,39 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gaming Tournament - Deposit</title>
+    <title>Gaming Tournament | Deposit</title>
     <style>
-        body { background-color: #0f0f1b; color: white; font-family: Arial, sans-serif; text-align: center; }
-        .container { margin-top: 50px; padding: 20px; border: 2px solid #ffd700; display: inline-block; border-radius: 15px; background: #1a1a2e; }
-        h2 { color: #ffd700; }
-        .payment-box { background: #252545; padding: 15px; border-radius: 10px; margin: 10px 0; }
-        input, button { width: 90%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none; }
-        button { background: #ffd700; color: black; font-weight: bold; cursor: pointer; }
-        .telegram-btn { background: #0088cc; color: white; text-decoration: none; display: block; padding: 10px; border-radius: 5px; margin-top: 10px; }
+        body { background-color: #0d0d1a; color: #ffffff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .container { background: #16162e; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%; max-width: 400px; border: 1px solid #2a2a4a; text-align: center; }
+        h2 { color: #ffcc00; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; }
+        p { font-size: 14px; color: #b0b0b0; margin-bottom: 20px; }
+        
+        .payment-methods { background: #1f1f3d; padding: 15px; border-radius: 12px; margin-bottom: 25px; border-left: 4px solid #ffcc00; text-align: left; }
+        .method { margin: 10px 0; font-size: 16px; display: flex; justify-content: space-between; }
+        .method b { color: #ffcc00; }
+
+        form input { width: 100%; padding: 12px; margin: 10px 0; background: #0d0d1a; border: 1px solid #3f3f5f; border-radius: 8px; color: #fff; box-sizing: border-box; outline: none; }
+        form input:focus { border-color: #ffcc00; }
+        
+        button { width: 100%; padding: 14px; background: linear-gradient(45deg, #ffcc00, #ff9900); border: none; border-radius: 8px; color: #000; font-weight: bold; font-size: 16px; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255, 204, 0, 0.3); }
+
+        .telegram-link { display: inline-block; margin-top: 25px; color: #0088cc; text-decoration: none; font-weight: bold; font-size: 15px; border: 1px solid #0088cc; padding: 8px 20px; border-radius: 50px; transition: 0.3s; }
+        .telegram-link:hover { background: #0088cc; color: #fff; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h2>টাকা ডিপোজিট করুন</h2>
-        <p>টুর্নামেন্টে অংশ নিতে নিচের নম্বরে টাকা পাঠিয়ে ফর্মটি পূরণ করুন।</p>
+        <h2>ডিপোজিট সেকশন</h2>
+        <p>নিচের নম্বরে টাকা পাঠিয়ে ফর্মটি সাবমিট করুন</p>
 
-        <div class="payment-box">
-            <p><strong>বিকাশ/নগদ (Personal): 017XXXXXXXX</strong></p>
+        <div class="payment-methods">
+            <div class="method"><span>বিকাশ (Personal):</span> <b>01941063121</b></div>
+            <div class="method"><span>নগদ (Personal):</span> <b>01604192939</b></div>
         </div>
 
-        <!-- রেজিস্ট্রেশন ও ডিপোজিট ফর্ম -->
-        <form action="আপনার_টেলিগ্রাম_লিঙ্ক_বা_গুগল_ফর্ম_লিঙ্ক" method="POST">
-            <input type="text" placeholder="ইউজার আইডি / গেমিং নেম" required>
-            <input type="email" placeholder="আপনার ইমেইল" required>
-            <input type="number" placeholder="কত টাকা পাঠিয়েছেন" required>
+        <form>
+            <input type="text" placeholder="ইউজার আইডি / গেম নেম" required>
+            <input type="number" placeholder="আপনার ফোন নম্বর" required>
+            <input type="number" placeholder="টাকার পরিমাণ" required>
             <input type="text" placeholder="ট্রানজেকশন আইডি (TxID)" required>
-            <button type="submit">ডিপোজিট রিকোয়েস্ট পাঠান</button>
+            <button type="button" onclick="alert('আপনার রিকোয়েস্ট পাঠানো হয়েছে। কিছুক্ষণ অপেক্ষা করুন।')">ডিপোজিট রিকোয়েস্ট পাঠান</button>
         </form>
 
-        <hr>
-        <p>যেকোনো সমস্যায় যোগাযোগ করুন:</p>
-        <a href="https://t.me/YourTelegramID" class="telegram-btn">সরাসরি টেলিগ্রাম সাপোর্ট</a>
+        <a href="https://t.me/miafd150" target="_blank" class="telegram-link">
+            💬 সরাসরি টেলিগ্রাম সাপোর্ট
+        </a>
     </div>
 
 </body>
