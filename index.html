@@ -14,22 +14,22 @@
         .card { background: #16162e; padding: 20px; border-radius: 15px; border: 1px solid #2a2a4a; margin-top: 15px; }
         .btn { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-top: 10px; font-size: 14px; transition: 0.3s; }
         .btn-join { background: #ffcc00; color: #000; }
+        .btn-deposit { background: #28a745; color: #fff; }
+        .btn-withdraw { background: #dc3545; color: #fff; }
         .btn-check { background: #0088cc; color: #fff; }
-        input { width: 100%; padding: 12px; margin: 10px 0; background: #0b0b1a; border: 1px solid #3f3f5f; border-radius: 8px; color: #fff; outline: none; }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; background: #0b0b1a; border: 1px solid #3f3f5f; border-radius: 8px; color: #fff; outline: none; }
         .section { display: none; }
         .section.active { display: block; }
         .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #16162e; display: flex; justify-content: space-around; padding: 12px 0; border-top: 2px solid #ffcc00; }
         .nav-item { color: #aaa; text-align: center; font-size: 12px; cursor: pointer; }
         .nav-item.active { color: #ffcc00; }
-        
-        /* History Table */
         .history-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 12px; }
         .history-table th, .history-table td { padding: 10px; border-bottom: 1px solid #2a2a4a; text-align: left; }
         .history-table th { color: #ffcc00; }
         .status-success { color: #28a745; }
         .status-debit { color: #ff4444; }
-
         #loader { display: none; text-align: center; margin: 10px 0; color: #ffcc00; }
+        .flex-btns { display: flex; gap: 10px; }
     </style>
 </head>
 <body>
@@ -40,14 +40,44 @@
     </div>
 
     <div class="container">
+        <!-- Home / Play Section -->
         <div id="home" class="section active">
             <div class="card">
                 <h3 style="color:#ffcc00">Solo Battle Royale</h3>
                 <p style="margin: 10px 0; font-size: 14px; color: #aaa;">এন্ট্রি ফি: ৳ ৫০ | প্রাইজ: ৳ ৫০০</p>
-                <button class="btn btn-join" onclick="joinGame()">জয়েন করুন</button>
+                <button class="btn btn-join" onclick="joinGame()">জয়েন করুন</button>
             </div>
         </div>
 
+        <!-- Wallet Section (Deposit/Withdraw) -->
+        <div id="wallet" class="section">
+            <div class="card">
+                <h3 style="color:#ffcc00; margin-bottom:15px;">Wallet Management</h3>
+                <div class="flex-btns">
+                    <button class="btn btn-deposit" onclick="showForm('depForm')">Deposit</button>
+                    <button class="btn btn-withdraw" onclick="showForm('withForm')">Withdraw</button>
+                </div>
+
+                <!-- Deposit Form -->
+                <div id="depForm" style="display:none; margin-top:20px; border-top: 1px solid #333; padding-top:10px;">
+                    <h4>Deposit Money</h4>
+                    <p style="font-size:11px; color:#ffcc00;">বিকাশ/নগদ পার্সোনাল: 01XXXXXXXXX</p>
+                    <input type="number" id="depAmount" placeholder="টাকার পরিমাণ">
+                    <input type="text" id="depTrx" placeholder="Transaction ID">
+                    <button class="btn btn-deposit" onclick="handleWalletAction('Deposit')">Confirm Deposit</button>
+                </div>
+
+                <!-- Withdraw Form -->
+                <div id="withForm" style="display:none; margin-top:20px; border-top: 1px solid #333; padding-top:10px;">
+                    <h4>Withdraw Money</h4>
+                    <input type="number" id="withAmount" placeholder="টাকার পরিমাণ">
+                    <input type="text" id="withNumber" placeholder="বিকাশ/নগদ নম্বর">
+                    <button class="btn btn-withdraw" onclick="handleWalletAction('Withdraw')">Request Withdraw</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Section -->
         <div id="profile" class="section">
             <div id="loginForm" class="card">
                 <h3>লগইন প্রোফাইল</h3>
@@ -79,13 +109,12 @@
                     <table class="history-table">
                         <thead>
                             <tr>
-                                <th>বিষয়</th>
+                                <th>বিষয়</th>
                                 <th>অবস্থা</th>
                                 <th>টাকা</th>
                             </tr>
                         </thead>
-                        <tbody id="hBody">
-                            </tbody>
+                        <tbody id="hBody"></tbody>
                     </table>
                 </div>
             </div>
@@ -94,19 +123,27 @@
 
     <div class="bottom-nav">
         <div class="nav-item active" onclick="tab('home', this)"><i class="fas fa-gamepad"></i><br>Play</div>
+        <div class="nav-item" onclick="tab('wallet', this)"><i class="fas fa-wallet"></i><br>Wallet</div>
         <div class="nav-item" onclick="tab('profile', this)"><i class="fas fa-user"></i><br>Profile</div>
     </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzP0AO__ZwS7P8aM0vhakVlaLi6Zee4dqSMI8IXN0iHIFbMvsCQsqGBSyYY1K57lKMWvA/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwrdAG6IV6GFooJ8ZgNhrE_8L8c4n4_JOpOPe6ledSuOs6vYKPxzJe7qMVEpLmBoiY2VQ/exec';
         const SHEET_ID = '1CjM5ATkGzSGQpilbxecg3urDniu1wqyo5MhNNH2WJ2g';
         let walletBalance = 0;
+        let loggedInUser = null;
 
         function tab(id, el) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             el.classList.add('active');
+        }
+
+        function showForm(formId) {
+            document.getElementById('depForm').style.display = 'none';
+            document.getElementById('withForm').style.display = 'none';
+            document.getElementById(formId).style.display = 'block';
         }
 
         function toggleAuth(reg) {
@@ -129,9 +166,10 @@
                 json.table.rows.forEach(r => {
                     if(r.c[0] && r.c[0].v.toLowerCase() == ign.toLowerCase() && r.c[5].v == pin) {
                         walletBalance = parseFloat(r.c[1].v);
+                        loggedInUser = { ign: r.c[0].v, pin: pin };
                         document.getElementById('displayBalance').innerText = "৳ " + walletBalance;
                         document.getElementById('uName').innerText = "স্বাগতম, " + r.c[0].v;
-                        document.getElementById('uRoom').innerHTML = `রুম আইডি: ${r.c[2] ? r.c[2].v : 'Wait'} <br> পাসওয়ার্ড: ${r.c[3] ? r.c[3].v : 'Wait'}`;
+                        document.getElementById('uRoom').innerHTML = `রুম আইডি: ${r.c[2] ? r.c[2].v : 'Wait'} <br> পাসওয়ার্ড: ${r.c[3] ? r.c[3].v : 'Wait'}`;
                         document.getElementById('userDash').style.display = 'block';
                         document.getElementById('loginForm').style.display = 'none';
                         loadHistory(ign);
@@ -139,7 +177,7 @@
                     }
                 });
                 if(!found) alert("ভুল আইডি অথবা পিন!");
-            } catch(e) { alert("নেটওয়ার্ক সমস্যা!"); }
+            } catch(e) { alert("নেটওয়ার্ক সমস্যা!"); }
             document.getElementById('loader').style.display = 'none';
         }
 
@@ -149,36 +187,55 @@
                 const logs = await res.json();
                 let html = '';
                 logs.forEach(l => {
-                    html += `<tr>
-                        <td>${l.type}</td>
-                        <td class="${l.status === 'Debit' ? 'status-debit' : 'status-success'}">${l.status}</td>
-                        <td>৳ ${l.amount}</td>
-                    </tr>`;
+                    html += `<tr><td>${l.type}</td><td class="${l.status === 'Debit' || l.status === 'Pending' ? 'status-debit' : 'status-success'}">${l.status}</td><td>৳ ${l.amount}</td></tr>`;
                 });
                 document.getElementById('hBody').innerHTML = html;
             } catch(e) { console.log("History Error"); }
         }
 
-        async function joinGame() {
-            let ign = document.getElementById('lIGN').value.trim();
-            let pin = document.getElementById('lPIN').value.trim();
+        async function handleWalletAction(type) {
+            if(!loggedInUser) return alert("আগে লগইন করুন!");
+            let amount, info;
             
-            if(!ign || walletBalance < 50) {
-                alert("লগইন করুন অথবা ব্যালেন্স নেই!");
-                tab('profile', document.querySelectorAll('.nav-item')[1]);
-                return;
+            if(type === 'Deposit') {
+                amount = document.getElementById('depAmount').value;
+                info = document.getElementById('depTrx').value;
+            } else {
+                amount = document.getElementById('withAmount').value;
+                info = document.getElementById('withNumber').value;
+                if(parseFloat(amount) > walletBalance) return alert("পর্যাপ্ত ব্যালেন্স নেই!");
             }
 
-            if(!confirm("আপনার ব্যালেন্স থেকে ৫০ টাকা কাটা হবে। নিশ্চিত?")) return;
+            if(!amount || !info) return alert("সব তথ্য দিন!");
+            document.getElementById('loader').style.display = 'block';
 
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: JSON.stringify({ action: type.toLowerCase(), ign: loggedInUser.ign, amount: amount, info: info })
+                });
+                alert(type + " রিকোয়েস্ট সফল হয়েছে। এডমিন চেক করে এপ্রুভ করবে।");
+                location.reload();
+            } catch(e) { alert("সার্ভার এরর!"); }
+            document.getElementById('loader').style.display = 'none';
+        }
+
+        async function joinGame() {
+            if(!loggedInUser || walletBalance < 50) {
+                alert("লগইন করুন অথবা ব্যালেন্স নেই!");
+                tab('profile', document.querySelectorAll('.nav-item')[2]);
+                return;
+            }
+            if(!confirm("৫০ টাকা কাটা হবে। নিশ্চিত?")) return;
             document.getElementById('loader').style.display = 'block';
             try {
                 await fetch(SCRIPT_URL, { 
                     method: 'POST', 
                     mode: 'no-cors', 
-                    body: JSON.stringify({ action: "join", ign: ign, pin: pin }) 
+                    body: JSON.stringify({ action: "join", ign: loggedInUser.ign, pin: loggedInUser.pin }) 
                 });
-                alert("জয়েন রিকোয়েস্ট পাঠানো হয়েছে! ২ সেকেন্ড পর আপডেট হচ্ছে...");
+                alert("জয়েন সফল! ২ সেকেন্ড পর আপডেট হচ্ছে...");
                 setTimeout(login, 2500);
             } catch(e) { alert("সার্ভার এরর!"); }
         }
@@ -188,7 +245,6 @@
             let ph = document.getElementById('rPH').value.trim();
             let pin = document.getElementById('rPIN').value.trim();
             if(!ign || !ph || !pin) return alert("সব তথ্য পূরণ করুন");
-
             document.getElementById('loader').style.display = 'block';
             try {
                 await fetch(SCRIPT_URL, { 
