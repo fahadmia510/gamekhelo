@@ -3,146 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crystal Gaming - Khelo & Jito</title>
+    <title>Crystal Gaming | Tournament</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background: #0b0b1a; color: #fff; padding-bottom: 70px; }
-
-        /* Header */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+        body { background: #07070c; color: #fff; padding-bottom: 80px; }
         .header { background: #16162e; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ffcc00; position: sticky; top: 0; z-index: 1000; }
-        .header h2 { color: #ffcc00; font-size: 20px; letter-spacing: 1px; }
-        .wallet-badge { background: #1f1f3d; padding: 5px 12px; border-radius: 20px; font-size: 14px; border: 1px solid #ffcc00; }
-
-        /* Main Container */
+        .wallet-badge { background: #1f1f3d; padding: 5px 15px; border-radius: 20px; color: #ffcc00; border: 1px solid #ffcc00; font-weight: bold; }
         .container { padding: 15px; max-width: 500px; margin: auto; }
-
-        /* Banner */
-        .banner { width: 100%; height: 150px; background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://i.ibb.co/p3yRdyS/gaming-banner.jpg'); background-size: cover; border-radius: 15px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; border: 1px solid #2a2a4a; }
-        .banner h3 { font-size: 22px; text-shadow: 2px 2px 10px #000; color: #ffcc00; }
-
-        /* Tournament Card (Like KheloBangladesh) */
-        .match-card { background: #16162e; border-radius: 15px; margin-bottom: 20px; overflow: hidden; border: 1px solid #2a2a4a; position: relative; }
-        .match-header { background: #1f1f3d; padding: 10px 15px; display: flex; justify-content: space-between; font-size: 13px; color: #aaa; }
+        
+        .match-card { background: #16162e; border-radius: 15px; margin-bottom: 20px; overflow: hidden; border: 1px solid #2a2a4a; }
         .match-body { padding: 15px; }
-        .match-title { font-size: 18px; color: #ffcc00; margin-bottom: 10px; font-weight: bold; }
-        .match-info { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        .match-title { font-size: 18px; color: #ffcc00; margin-bottom: 10px; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
         .info-box { background: #0b0b1a; padding: 10px; border-radius: 8px; text-align: center; border-bottom: 2px solid #ffcc00; }
-        .info-box span { display: block; font-size: 12px; color: #aaa; }
-        .info-box b { font-size: 14px; color: #fff; }
+        
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-top: 5px; }
+        .btn-join { background: #ffcc00; color: #000; }
+        .btn-check { background: #0088cc; color: #fff; }
 
-        .btn-join { width: 100%; padding: 12px; background: #ffcc00; border: none; border-radius: 8px; font-weight: bold; color: #000; cursor: pointer; text-transform: uppercase; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: #16162e; padding: 20px; border-radius: 15px; width: 100%; max-width: 400px; border: 1px solid #ffcc00; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #0b0b1a; border: 1px solid #3f3f5f; border-radius: 8px; color: #fff; }
 
-        /* Bottom Navigation */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #16162e; display: flex; justify-content: space-around; padding: 10px 0; border-top: 2px solid #ffcc00; z-index: 1000; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #16162e; display: flex; justify-content: space-around; padding: 12px 0; border-top: 2px solid #ffcc00; }
         .nav-item { color: #aaa; text-align: center; font-size: 12px; text-decoration: none; cursor: pointer; }
-        .nav-item i { display: block; font-size: 20px; margin-bottom: 3px; }
         .nav-item.active { color: #ffcc00; }
-
-        /* Hidden Sections */
         .section { display: none; }
         .section.active { display: block; }
-
-        /* Wallet Form */
-        .form-group { margin-bottom: 15px; text-align: left; }
-        .form-group label { display: block; margin-bottom: 5px; font-size: 14px; color: #ffcc00; }
-        .form-group input { width: 100%; padding: 12px; background: #1f1f3d; border: 1px solid #3f3f5f; border-radius: 8px; color: #fff; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h2>CRYSTAL GAMING</h2>
-        <div class="wallet-badge"><i class="fas fa-wallet"></i> ৳ 0.00</div>
+        <h2 style="color:#ffcc00">CRYSTAL GAMING</h2>
+        <div class="wallet-badge" id="displayBalance">৳ 0.00</div>
     </div>
 
     <div class="container">
-        
         <div id="home" class="section active">
-            <div class="banner">
-                <h3>ধামাকা টুর্নামেন্ট শুরু!</h3>
-            </div>
-
             <div class="match-card">
-                <div class="match-header">
-                    <span>Match #102</span>
-                    <span style="color: #00ff00;">Live Soon</span>
-                </div>
                 <div class="match-body">
                     <div class="match-title">Free Fire Solo Battle</div>
-                    <div class="match-info">
-                        <div class="info-box"><span>প্রাইজ পুল</span><b>৳ ৫০০</b></div>
-                        <div class="info-box"><span>এন্ট্রি ফি</span><b>৳ ৫০</b></div>
-                        <div class="info-box"><span>ম্যাপ</span><b>Bermuda</b></div>
-                        <div class="info-box"><span>টাইপ</span><b>Solo</b></div>
+                    <div class="info-grid">
+                        <div class="info-box"><span>প্রাইজ</span><br><b>৳ ৫০০</b></div>
+                        <div class="info-box"><span>এন্ট্রি</span><br><b>৳ ৫০</b></div>
                     </div>
-                    <button class="btn-join" onclick="showSection('wallet')">JOIN NOW</button>
+                    <button class="btn btn-join" onclick="showSection('wallet')">JOIN NOW</button>
                 </div>
             </div>
         </div>
 
         <div id="wallet" class="section">
-            <h3 style="color: #ffcc00; margin-bottom: 15px;">টাকা ডিপোজিট করুন</h3>
-            <div style="background: #1f1f3d; padding: 15px; border-radius: 10px; margin-bottom: 20px; border-left: 5px solid #ffcc00;">
-                <p>বিকাশ (Personal): <b>01941063121</b></p>
-                <p>নগদ (Personal): <b>01604192939</b></p>
-                <p style="font-size: 12px; margin-top: 10px; color: #aaa;">* টাকা পাঠানোর পর নিচের ফর্মটি পূরণ করুন।</p>
+            <div style="background:#1f1f3d; padding:15px; border-radius:10px; margin-bottom:15px; border-left:4px solid #ffcc00">
+                <p>বিকাশ: 01941063121</p>
+                <p>নগদ: 01604192939</p>
             </div>
-
-            <form onsubmit="event.preventDefault(); sendDeposit();">
-                <div class="form-group">
-                    <label>আপনার গেম আইডি (IGN)</label>
-                    <input type="text" id="ign" placeholder="যেমন: Fahad_YT" required>
-                </div>
-                <div class="form-group">
-                    <label>কত টাকা পাঠিয়েছেন</label>
-                    <input type="number" id="amount" placeholder="যেমন: ৫০" required>
-                </div>
-                <div class="form-group">
-                    <label>ট্রানজেকশন আইডি (TxID)</label>
-                    <input type="text" id="txid" placeholder="যেমন: 8N7X2W..." required>
-                </div>
-                <button type="submit" class="btn-join" style="background: #28a745; color: #fff;">ডিপোজিট রিকোয়েস্ট পাঠান</button>
-            </form>
+            <input type="text" id="ignInput" placeholder="আপনার গেম আইডি (IGN)">
+            <button class="btn btn-check" onclick="fetchBalance()">Balance Check</button>
+            <hr style="margin:15px 0; border:0.5px solid #333">
+            <input type="number" id="depAmount" placeholder="টাকার পরিমাণ">
+            <input type="text" id="depTrx" placeholder="TxID">
+            <button class="btn btn-join" style="background:#28a745; color:#fff" onclick="sendToTG()">ডিপোজিট রিকোয়েস্ট</button>
         </div>
 
         <div id="support" class="section">
-            <div style="text-align: center; margin-top: 50px;">
-                <i class="fab fa-telegram" style="font-size: 60px; color: #0088cc;"></i>
-                <h3 style="margin-top: 20px;">সরাসরি সাপোর্ট</h3>
-                <p style="color: #aaa; margin-bottom: 30px;">যেকোনো সমস্যা হলে আমাদের টেলিগ্রামে মেসেজ দিন।</p>
-                <a href="https://t.me/miafd150" class="btn-join" style="text-decoration: none; display: block;">কন্টাক্ট টেলিগ্রাম</a>
+            <div style="text-align:center; margin-top:50px">
+                <i class="fab fa-telegram" style="font-size:50px; color:#0088cc"></i>
+                <p style="margin-top:15px">সরাসরি কথা বলতে ক্লিক করুন</p>
+                <a href="https://t.me/miafd150" class="btn btn-join" style="display:block; text-decoration:none; margin-top:20px">Telegram Support</a>
             </div>
         </div>
-
     </div>
 
     <div class="bottom-nav">
-        <a class="nav-item active" onclick="showSection('home', this)"><i class="fas fa-gamepad"></i>Play</a>
-        <a class="nav-item" onclick="showSection('wallet', this)"><i class="fas fa-wallet"></i>Wallet</a>
-        <a class="nav-item" onclick="showSection('support', this)"><i class="fas fa-headset"></i>Support</a>
+        <div class="nav-item active" onclick="showSection('home', this)"><i class="fas fa-gamepad"></i><br>Play</div>
+        <div class="nav-item" onclick="showSection('wallet', this)"><i class="fas fa-wallet"></i><br>Wallet</div>
+        <div class="nav-item" onclick="showSection('support', this)"><i class="fas fa-headset"></i><br>Support</div>
     </div>
 
     <script>
-        function showSection(sectionId, element) {
-            // Hide all sections
+        const SHEET_ID = '1CjM5ATkGzSGQpilbxecg3urDniu1wqyo5MhNNH2WJ2g';
+        
+        function showSection(id, el) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            // Show selected section
-            document.getElementById(sectionId).classList.add('active');
-            
-            // Handle nav bar active color
-            if(element) {
-                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-                element.classList.add('active');
+            document.getElementById(id).classList.add('active');
+            if(el) {
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                el.classList.add('active');
             }
         }
 
-        function sendDeposit() {
-            let ign = document.getElementById('ign').value;
-            let amount = document.getElementById('amount').value;
-            let txid = document.getElementById('txid').value;
-            let msg = `ডিপোজিট রিকোয়েস্ট!\nID: ${ign}\nটাকা: ${amount}\nTxID: ${txid}`;
-            window.location.href = "https://t.me/miafd150?text=" + encodeURIComponent(msg);
+        async function fetchBalance() {
+            let ign = document.getElementById('ignInput').value;
+            if(!ign) return alert("আগে গেম আইডি দিন");
+            
+            const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+            try {
+                const res = await fetch(url);
+                const text = await res.text();
+                const json = JSON.parse(text.substr(47).slice(0, -2));
+                let found = false;
+                
+                json.table.rows.forEach(row => {
+                    if(row.c[0] && row.c[0].v == ign) {
+                        document.getElementById('displayBalance').innerText = "৳ " + row.c[1].v;
+                        alert("আপনার ব্যালেন্স: ৳ " + row.c[1].v);
+                        found = true;
+                    }
+                });
+                if(!found) alert("আইডি পাওয়া যায়নি!");
+            } catch(e) { alert("Error connecting to database"); }
+        }
+
+        function sendToTG() {
+            let ign = document.getElementById('ignInput').value;
+            let am = document.getElementById('depAmount').value;
+            let tx = document.getElementById('depTrx').value;
+            if(!ign || !am || !tx) return alert("সব ঘর পূরণ করুন");
+            window.location.href = `https://t.me/miafd150?text=Deposit Request:\nID: ${ign}\nAmount: ${am}\nTxID: ${tx}`;
         }
     </script>
 </body>
