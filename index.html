@@ -6,26 +6,32 @@
     <title>Crystal Gaming | Tournament</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { background: #07070c; color: #fff; padding-bottom: 80px; }
         .header { background: #16162e; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ffcc00; position: sticky; top: 0; z-index: 1000; }
         .wallet-badge { background: #1f1f3d; padding: 5px 15px; border-radius: 20px; color: #ffcc00; border: 1px solid #ffcc00; font-weight: bold; }
-        .container { padding: 15px; max-width: 500px; margin: auto; }
+        .container { padding: 15px; max-width: 500px; margin: auto; text-align: center; }
         
-        .match-card { background: #16162e; border-radius: 15px; margin-bottom: 20px; overflow: hidden; border: 1px solid #2a2a4a; }
+        /* Match Card Design */
+        .match-card { background: #16162e; border-radius: 15px; margin-bottom: 20px; overflow: hidden; border: 1px solid #2a2a4a; text-align: left; }
+        .match-img { width: 100%; height: 150px; background: linear-gradient(45deg, #000, #1a1a2e); display: flex; align-items: center; justify-content: center; border-bottom: 2px solid #ffcc00; }
+        .match-img::after { content: "LIVE TOURNAMENT"; color: #ffcc00; font-weight: bold; border: 2px solid #ffcc00; padding: 5px 15px; }
         .match-body { padding: 15px; }
         .match-title { font-size: 18px; color: #ffcc00; margin-bottom: 10px; }
         .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
         .info-box { background: #0b0b1a; padding: 10px; border-radius: 8px; text-align: center; border-bottom: 2px solid #ffcc00; }
+        .info-box span { font-size: 12px; color: #aaa; display: block; }
         
-        .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-top: 5px; }
+        /* Buttons & Inputs */
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-top: 10px; transition: 0.3s; }
         .btn-join { background: #ffcc00; color: #000; }
         .btn-check { background: #0088cc; color: #fff; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #0b0b1a; border: 1px solid #3f3f5f; border-radius: 8px; color: #fff; box-sizing: border-box; }
 
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center; padding: 20px; }
-        .modal-content { background: #16162e; padding: 20px; border-radius: 15px; width: 100%; max-width: 400px; border: 1px solid #ffcc00; }
-        input { width: 100%; padding: 12px; margin: 10px 0; background: #0b0b1a; border: 1px solid #3f3f5f; border-radius: 8px; color: #fff; }
+        /* Room Info Box */
+        #roomInfoBox { display: none; background: #1f1f3d; padding: 15px; border-radius: 10px; margin-top: 15px; border: 1px dashed #ffcc00; text-align: left; }
 
+        /* Navigation */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #16162e; display: flex; justify-content: space-around; padding: 12px 0; border-top: 2px solid #ffcc00; }
         .nav-item { color: #aaa; text-align: center; font-size: 12px; text-decoration: none; cursor: pointer; }
         .nav-item.active { color: #ffcc00; }
@@ -43,35 +49,46 @@
     <div class="container">
         <div id="home" class="section active">
             <div class="match-card">
+                <div class="match-img"></div>
                 <div class="match-body">
                     <div class="match-title">Free Fire Solo Battle</div>
                     <div class="info-grid">
-                        <div class="info-box"><span>প্রাইজ</span><br><b>৳ ৫০০</b></div>
-                        <div class="info-box"><span>এন্ট্রি</span><br><b>৳ ৫০</b></div>
+                        <div class="info-box"><span>প্রাইজ</span><b>৳ ৫০০</b></div>
+                        <div class="info-box"><span>এন্ট্রি ফি</span><b>৳ ৫০</b></div>
+                        <div class="info-box"><span>ম্যাপ</span><b>Bermuda</b></div>
+                        <div class="info-box"><span>সময়</span><b>০৯:০০ PM</b></div>
                     </div>
-                    <button class="btn btn-join" onclick="showSection('wallet')">JOIN NOW</button>
+                    <button class="btn btn-join" onclick="showSection('wallet')">ম্যাচে জয়েন করুন</button>
                 </div>
             </div>
         </div>
 
         <div id="wallet" class="section">
-            <div style="background:#1f1f3d; padding:15px; border-radius:10px; margin-bottom:15px; border-left:4px solid #ffcc00">
-                <p>বিকাশ: 01941063121</p>
-                <p>নগদ: 01604192939</p>
+            <h3 style="color:#ffcc00; margin-bottom:15px;">ওয়ালেট ও রুম আইডি</h3>
+            
+            <div style="background:#1f1f3d; padding:15px; border-radius:10px; margin-bottom:15px; border-left:4px solid #ffcc00; text-align:left;">
+                <p>বিকাশ (Personal): <b>01941063121</b></p>
+                <p>নগদ (Personal): <b>01604192939</b></p>
             </div>
+
             <input type="text" id="ignInput" placeholder="আপনার গেম আইডি (IGN)">
-            <button class="btn btn-check" onclick="fetchBalance()">Balance Check</button>
-            <hr style="margin:15px 0; border:0.5px solid #333">
+            <button class="btn btn-check" onclick="fetchBalance()">ব্যালেন্স ও রুম আইডি চেক</button>
+
+            <div id="roomInfoBox"></div>
+
+            <hr style="margin:20px 0; border:0.5px solid #333">
+            
+            <p style="font-size:14px; color:#aaa; margin-bottom:10px;">টাকা পাঠিয়ে থাকলে নিচের ফরমটি পূরণ করুন:</p>
             <input type="number" id="depAmount" placeholder="টাকার পরিমাণ">
-            <input type="text" id="depTrx" placeholder="TxID">
-            <button class="btn btn-join" style="background:#28a745; color:#fff" onclick="sendToTG()">ডিপোজিট রিকোয়েস্ট</button>
+            <input type="text" id="depTrx" placeholder="ট্রানজেকশন আইডি (TxID)">
+            <button class="btn btn-join" style="background:#28a745; color:#fff" onclick="sendToTG()">রিকোয়েস্ট পাঠান</button>
         </div>
 
         <div id="support" class="section">
             <div style="text-align:center; margin-top:50px">
                 <i class="fab fa-telegram" style="font-size:50px; color:#0088cc"></i>
-                <p style="margin-top:15px">সরাসরি কথা বলতে ক্লিক করুন</p>
-                <a href="https://t.me/miafd150" class="btn btn-join" style="display:block; text-decoration:none; margin-top:20px">Telegram Support</a>
+                <p style="margin-top:15px">যেকোনো সমস্যায় টেলিগ্রামে যোগাযোগ করুন</p>
+                <a href="https://t.me/miafd150" class="btn btn-check" style="display:block; text-decoration:none; margin-top:20px">Telegram Support</a>
             </div>
         </div>
     </div>
@@ -83,8 +100,10 @@
     </div>
 
     <script>
+        // আপনার গুগল শিট আইডি
         const SHEET_ID = '1CjM5ATkGzSGQpilbxecg3urDniu1wqyo5MhNNH2WJ2g';
         
+        // সেকশন পরিবর্তন করার ফাংশন
         function showSection(id, el) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
@@ -94,34 +113,57 @@
             }
         }
 
+        // গুগল শিট থেকে ডাটা আনার ফাংশন
         async function fetchBalance() {
-            let ign = document.getElementById('ignInput').value;
-            if(!ign) return alert("আগে গেম আইডি দিন");
+            let ign = document.getElementById('ignInput').value.trim();
+            if(!ign) return alert("দয়া করে আগে গেম আইডি দিন");
             
             const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+            
             try {
                 const res = await fetch(url);
                 const text = await res.text();
-                const json = JSON.parse(text.substr(47).slice(0, -2));
-                let found = false;
+                const json = JSON.parse(text.substring(47, text.length - 2));
+                const rows = json.table.rows;
                 
-                json.table.rows.forEach(row => {
-                    if(row.c[0] && row.c[0].v == ign) {
-                        document.getElementById('displayBalance').innerText = "৳ " + row.c[1].v;
-                        alert("আপনার ব্যালেন্স: ৳ " + row.c[1].v);
+                let found = false;
+                for (let row of rows) {
+                    if (row.c[0] && row.c[0].v.toString().toLowerCase() === ign.toLowerCase()) {
+                        let balance = row.c[1] ? row.c[1].v : 0;
+                        let roomId = row.c[2] ? row.c[2].v : "অপেক্ষা করুন..."; 
+                        let pass = row.c[3] ? row.c[3].v : "অপেক্ষা করুন...";
+
+                        document.getElementById('displayBalance').innerText = "৳ " + balance;
+                        
+                        let roomBox = document.getElementById('roomInfoBox');
+                        roomBox.style.display = 'block';
+                        roomBox.innerHTML = `
+                            <h4 style="color:#ffcc00; margin-bottom:8px;">ম্যাচ ইনফরমেশন:</h4>
+                            <p>Room ID: <b style="color:#fff;">${roomId}</b></p>
+                            <p>Password: <b style="color:#fff;">${pass}</b></p>
+                            <small style="color:#aaa;">*ম্যাচ শুরুর ১৫ মিনিট আগে চেক করুন।</small>
+                        `;
+                        
+                        alert("আপনার আইডি পাওয়া গেছে। তথ্য আপডেট করা হয়েছে।");
                         found = true;
+                        break;
                     }
-                });
-                if(!found) alert("আইডি পাওয়া যায়নি!");
-            } catch(e) { alert("Error connecting to database"); }
+                }
+                if(!found) alert("এই আইডিটি পাওয়া যায়নি। টাকা পাঠিয়ে থাকলে অপেক্ষা করুন।");
+            } catch(e) { 
+                alert("ডাটাবেজ কানেক্ট হতে পারছে না। গুগল শিট Public করা আছে কি না চেক করুন।"); 
+            }
         }
 
+        // টেলিগ্রামে তথ্য পাঠানোর ফাংশন
         function sendToTG() {
             let ign = document.getElementById('ignInput').value;
             let am = document.getElementById('depAmount').value;
             let tx = document.getElementById('depTrx').value;
-            if(!ign || !am || !tx) return alert("সব ঘর পূরণ করুন");
-            window.location.href = `https://t.me/miafd150?text=Deposit Request:\nID: ${ign}\nAmount: ${am}\nTxID: ${tx}`;
+            if(!ign || !am || !tx) return alert("সবগুলো ঘর পূরণ করুন");
+            
+            let text = `নতুন ডিপোজিট রিকোয়েস্ট!\nID: ${ign}\nটাকা: ${am}\nTxID: ${tx}`;
+            window.location.href = `https://t.me/miafd150?text=` + encodeURIComponent(text);
         }
     </script>
 </body>
