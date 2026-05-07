@@ -10,136 +10,196 @@
         body { background: #07070c; color: #fff; padding-bottom: 80px; }
         .header { background: #16162e; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ffcc00; position: sticky; top: 0; z-index: 1000; }
         .wallet-badge { background: #1f1f3d; padding: 5px 15px; border-radius: 20px; color: #ffcc00; border: 1px solid #ffcc00; font-weight: bold; }
-        .container { padding: 15px; max-width: 500px; margin: auto; text-align: center; }
-        .card { background: #16162e; padding: 20px; border-radius: 15px; border: 1px solid #2a2a4a; margin-top: 10px; text-align: left; }
+        .container { padding: 15px; max-width: 500px; margin: auto; }
+        .card { background: #16162e; padding: 20px; border-radius: 15px; border: 1px solid #2a2a4a; margin-top: 15px; }
         .btn { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; margin-top: 10px; font-size: 14px; transition: 0.3s; }
         .btn-join { background: #ffcc00; color: #000; }
         .btn-check { background: #0088cc; color: #fff; }
-        input { width: 100%; padding: 12px; margin: 10px 0; background: #0b0b1a; border: 1px solid #3f3f5f; border-radius: 8px; color: #fff; box-sizing: border-box; outline: none; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #0b0b1a; border: 1px solid #3f3f5f; border-radius: 8px; color: #fff; outline: none; }
         .section { display: none; }
         .section.active { display: block; }
         .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #16162e; display: flex; justify-content: space-around; padding: 12px 0; border-top: 2px solid #ffcc00; }
-        .nav-item { color: #aaa; text-align: center; font-size: 12px; text-decoration: none; cursor: pointer; }
+        .nav-item { color: #aaa; text-align: center; font-size: 12px; cursor: pointer; }
         .nav-item.active { color: #ffcc00; }
-        #loader { display: none; margin: 10px auto; border: 4px solid #f3f3f3; border-top: 4px solid #ffcc00; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        /* History Table */
+        .history-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 12px; }
+        .history-table th, .history-table td { padding: 10px; border-bottom: 1px solid #2a2a4a; text-align: left; }
+        .history-table th { color: #ffcc00; }
+        .status-success { color: #28a745; }
+        .status-debit { color: #ff4444; }
+
+        #loader { display: none; text-align: center; margin: 10px 0; color: #ffcc00; }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h2 style="color:#ffcc00">CRYSTAL GAMING</h2>
+        <h2 style="color:#ffcc00">CRYSTAL</h2>
         <div class="wallet-badge" id="displayBalance">৳ 0.00</div>
     </div>
 
     <div class="container">
         <div id="home" class="section active">
             <div class="card">
-                <h3 style="color:#ffcc00">Free Fire Solo Battle</h3>
-                <p style="font-size: 13px; color:#aaa;">এন্ট্রি ফি: ৳ ৫০ | প্রাইজ: ৳ ৫০০</p>
+                <h3 style="color:#ffcc00">Solo Battle Royale</h3>
+                <p style="margin: 10px 0; font-size: 14px; color: #aaa;">এন্ট্রি ফি: ৳ ৫০ | প্রাইজ: ৳ ৫০০</p>
                 <button class="btn btn-join" onclick="joinGame()">জয়েন করুন</button>
             </div>
         </div>
 
         <div id="profile" class="section">
             <div id="loginForm" class="card">
-                <h3 style="color:#ffcc00">লগইন করুন</h3>
-                <input type="text" id="loginIGN" placeholder="গেম আইডি (IGN)">
-                <input type="password" id="loginPIN" placeholder="৪ সংখ্যার পিন">
-                <button class="btn btn-check" onclick="loginUser()">ব্যালেন্স ও রুম চেক</button>
-                <p style="text-align:center; margin-top:10px; font-size:12px;">অ্যাকাউন্ট নেই? <a href="javascript:void(0)" onclick="document.getElementById('loginForm').style.display='none'; document.getElementById('regForm').style.display='block';" style="color:#ffcc00">রেজিস্ট্রেশন করুন</a></p>
+                <h3>লগইন প্রোফাইল</h3>
+                <input type="text" id="lIGN" placeholder="গেম আইডি (IGN)">
+                <input type="password" id="lPIN" placeholder="৪ সংখ্যার পিন">
+                <button class="btn btn-check" onclick="login()">লগইন করুন</button>
+                <p style="text-align:center; margin-top:15px; font-size:12px;">অ্যাকাউন্ট নেই? <a href="javascript:void(0)" onclick="toggleAuth(true)" style="color:#ffcc00">রেজিস্ট্রেশন করুন</a></p>
             </div>
 
             <div id="regForm" class="card" style="display:none;">
-                <h3 style="color:#ffcc00">নতুন অ্যাকাউন্ট</h3>
-                <input type="text" id="regIGN" placeholder="গেম আইডি">
-                <input type="number" id="regPhone" placeholder="ফোন নম্বর">
-                <input type="password" id="regPIN" placeholder="পিন সেট করুন">
-                <button class="btn btn-join" onclick="registerUser()">রেজিস্ট্রি সম্পন্ন করুন</button>
-                <p style="text-align:center; margin-top:10px; font-size:12px;"><a href="javascript:void(0)" onclick="document.getElementById('regForm').style.display='none'; document.getElementById('loginForm').style.display='block';" style="color:#aaa">লগইন পেজে যান</a></p>
+                <h3>নতুন অ্যাকাউন্ট</h3>
+                <input type="text" id="rIGN" placeholder="গেম আইডি">
+                <input type="number" id="rPH" placeholder="ফোন নম্বর">
+                <input type="password" id="rPIN" placeholder="পিন সেট করুন">
+                <button class="btn btn-join" onclick="register()">রেজিস্ট্রি সম্পন্ন করুন</button>
+                <p style="text-align:center; margin-top:15px; font-size:12px;"><a href="javascript:void(0)" onclick="toggleAuth(false)" style="color:#aaa">লগইন পেজে ফিরে যান</a></p>
             </div>
-            
-            <div id="loader"></div>
-            <div id="roomInfoBox" class="card" style="display:none; border:1px dashed #ffcc00;"></div>
+
+            <div id="loader"><i class="fas fa-spinner fa-spin"></i> প্রসেস হচ্ছে...</div>
+
+            <div id="userDash" style="display:none;">
+                <div class="card" style="border: 1px solid #ffcc00;">
+                    <h4 id="uName" style="color:#ffcc00"></h4>
+                    <div id="uRoom" style="margin-top:10px; font-size:13px; color:#aaa;"></div>
+                </div>
+                
+                <h4 style="margin-top:20px; color:#ffcc00"><i class="fas fa-history"></i> আপনার ইতিহাস</h4>
+                <div class="card" style="padding: 10px; overflow-x: auto;">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th>বিষয়</th>
+                                <th>অবস্থা</th>
+                                <th>টাকা</th>
+                            </tr>
+                        </thead>
+                        <tbody id="hBody">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
     <div class="bottom-nav">
-        <div class="nav-item active" onclick="showTab('home', this)"><i class="fas fa-gamepad"></i><br>Play</div>
-        <div class="nav-item" onclick="showTab('profile', this)"><i class="fas fa-user"></i><br>Profile</div>
+        <div class="nav-item active" onclick="tab('home', this)"><i class="fas fa-gamepad"></i><br>Play</div>
+        <div class="nav-item" onclick="tab('profile', this)"><i class="fas fa-user"></i><br>Profile</div>
     </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw0wKz1kPXhKGOWbkrxeQTnCkvg2tZtqj1v3MEHeZc8F4sPKIxyyQfQGLejAZFlBwO-Hw/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzP0AO__ZwS7P8aM0vhakVlaLi6Zee4dqSMI8IXN0iHIFbMvsCQsqGBSyYY1K57lKMWvA/exec';
         const SHEET_ID = '1CjM5ATkGzSGQpilbxecg3urDniu1wqyo5MhNNH2WJ2g';
-        let currentBalance = 0;
+        let walletBalance = 0;
 
-        function showTab(id, el) {
+        function tab(id, el) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             el.classList.add('active');
         }
 
-        async function loginUser() {
-            let ign = document.getElementById('loginIGN').value.trim();
-            let pin = document.getElementById('loginPIN').value.trim();
-            if(!ign || !pin) return alert("আইডি এবং পিন দিন");
-            
+        function toggleAuth(reg) {
+            document.getElementById('regForm').style.display = reg ? 'block' : 'none';
+            document.getElementById('loginForm').style.display = reg ? 'none' : 'block';
+        }
+
+        async function login() {
+            let ign = document.getElementById('lIGN').value.trim();
+            let pin = document.getElementById('lPIN').value.trim();
+            if(!ign || !pin) return alert("আইডি ও পিন দিন");
+
             document.getElementById('loader').style.display = 'block';
             try {
                 const res = await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`);
-                const text = await res.text();
-                const json = JSON.parse(text.substring(47, text.length - 2));
+                const txt = await res.text();
+                const json = JSON.parse(txt.substring(47, txt.length - 2));
                 let found = false;
 
-                json.table.rows.forEach(row => {
-                    if(row.c[0] && row.c[0].v.toLowerCase() == ign.toLowerCase() && row.c[5].v == pin) {
-                        currentBalance = parseFloat(row.c[1].v);
-                        document.getElementById('displayBalance').innerText = "৳ " + currentBalance;
-                        document.getElementById('roomInfoBox').style.display = 'block';
-                        document.getElementById('roomInfoBox').innerHTML = `<h4>আপনার তথ্য:</h4><p>রুম আইডি: ${row.c[2] ? row.c[2].v : 'অপেক্ষা করুন'}</p><p>পাসওয়ার্ড: ${row.c[3] ? row.c[3].v : 'অপেক্ষা করুন'}</p>`;
+                json.table.rows.forEach(r => {
+                    if(r.c[0] && r.c[0].v.toLowerCase() == ign.toLowerCase() && r.c[5].v == pin) {
+                        walletBalance = parseFloat(r.c[1].v);
+                        document.getElementById('displayBalance').innerText = "৳ " + walletBalance;
+                        document.getElementById('uName').innerText = "স্বাগতম, " + r.c[0].v;
+                        document.getElementById('uRoom').innerHTML = `রুম আইডি: ${r.c[2] ? r.c[2].v : 'Wait'} <br> পাসওয়ার্ড: ${r.c[3] ? r.c[3].v : 'Wait'}`;
+                        document.getElementById('userDash').style.display = 'block';
+                        document.getElementById('loginForm').style.display = 'none';
+                        loadHistory(ign);
                         found = true;
-                        alert("লগইন সফল!");
                     }
                 });
-                if(!found) alert("আইডি অথবা পিন ভুল!");
-            } catch(e) { alert("ডাটা কানেকশন এরর!"); }
+                if(!found) alert("ভুল আইডি অথবা পিন!");
+            } catch(e) { alert("নেটওয়ার্ক সমস্যা!"); }
             document.getElementById('loader').style.display = 'none';
         }
 
-        async function registerUser() {
-            let ign = document.getElementById('regIGN').value.trim();
-            let phone = document.getElementById('regPhone').value.trim();
-            let pin = document.getElementById('regPIN').value.trim();
-            if(!ign || !phone || !pin) return alert("সব তথ্য দিন");
-
-            document.getElementById('loader').style.display = 'block';
-            await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: "register", ign: ign, phone: phone, pin: pin }) });
-            alert("রেজিস্ট্রেশন রিকোয়েস্ট পাঠানো হয়েছে। ২ সেকেন্ড পর লগইন করুন।");
-            setTimeout(() => {
-                document.getElementById('regForm').style.display = 'none';
-                document.getElementById('loginForm').style.display = 'block';
-                document.getElementById('loader').style.display = 'none';
-            }, 2000);
+        async function loadHistory(ign) {
+            try {
+                const res = await fetch(`${SCRIPT_URL}?ign=${ign}`);
+                const logs = await res.json();
+                let html = '';
+                logs.forEach(l => {
+                    html += `<tr>
+                        <td>${l.type}</td>
+                        <td class="${l.status === 'Debit' ? 'status-debit' : 'status-success'}">${l.status}</td>
+                        <td>৳ ${l.amount}</td>
+                    </tr>`;
+                });
+                document.getElementById('hBody').innerHTML = html;
+            } catch(e) { console.log("History Error"); }
         }
 
         async function joinGame() {
-            let ign = document.getElementById('loginIGN').value.trim();
-            let pin = document.getElementById('loginPIN').value.trim();
+            let ign = document.getElementById('lIGN').value.trim();
+            let pin = document.getElementById('lPIN').value.trim();
             
-            if(!ign || currentBalance < 50) {
-                alert("ব্যালেন্স নেই অথবা লগইন করা নেই!");
-                showTab('profile', document.querySelectorAll('.nav-item')[1]);
+            if(!ign || walletBalance < 50) {
+                alert("লগইন করুন অথবা ব্যালেন্স নেই!");
+                tab('profile', document.querySelectorAll('.nav-item')[1]);
                 return;
             }
 
-            if(!confirm("৫০ টাকা কেটে নেওয়া হবে। আপনি কি নিশ্চিত?")) return;
+            if(!confirm("আপনার ব্যালেন্স থেকে ৫০ টাকা কাটা হবে। নিশ্চিত?")) return;
 
             document.getElementById('loader').style.display = 'block';
-            await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: "join", ign: ign, pin: pin }) });
-            alert("সফলভাবে রিকোয়েস্ট পাঠানো হয়েছে! রিফ্রেশ হচ্ছে...");
-            setTimeout(loginUser, 2500);
+            try {
+                await fetch(SCRIPT_URL, { 
+                    method: 'POST', 
+                    mode: 'no-cors', 
+                    body: JSON.stringify({ action: "join", ign: ign, pin: pin }) 
+                });
+                alert("জয়েন রিকোয়েস্ট পাঠানো হয়েছে! ২ সেকেন্ড পর আপডেট হচ্ছে...");
+                setTimeout(login, 2500);
+            } catch(e) { alert("সার্ভার এরর!"); }
+        }
+
+        async function register() {
+            let ign = document.getElementById('rIGN').value.trim();
+            let ph = document.getElementById('rPH').value.trim();
+            let pin = document.getElementById('rPIN').value.trim();
+            if(!ign || !ph || !pin) return alert("সব তথ্য পূরণ করুন");
+
+            document.getElementById('loader').style.display = 'block';
+            try {
+                await fetch(SCRIPT_URL, { 
+                    method: 'POST', 
+                    mode: 'no-cors', 
+                    body: JSON.stringify({ action: "register", ign: ign, phone: ph, pin: pin }) 
+                });
+                alert("রেজিস্ট্রেশন সফল! এখন লগইন করুন।");
+                toggleAuth(false);
+            } catch(e) { alert("এরর!"); }
+            document.getElementById('loader').style.display = 'none';
         }
     </script>
 </body>
