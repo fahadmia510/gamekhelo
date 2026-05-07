@@ -3,50 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gaming Tournament | Deposit</title>
+    <title>Crystal Knowledge Hub | Gaming</title>
     <style>
-        body { background-color: #0d0d1a; color: #ffffff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .container { background: #16162e; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%; max-width: 400px; border: 1px solid #2a2a4a; text-align: center; }
-        h2 { color: #ffcc00; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; }
-        p { font-size: 14px; color: #b0b0b0; margin-bottom: 20px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: #07070c; color: #fff; line-height: 1.6; }
         
-        .payment-methods { background: #1f1f3d; padding: 15px; border-radius: 12px; margin-bottom: 25px; border-left: 4px solid #ffcc00; text-align: left; }
-        .method { margin: 10px 0; font-size: 16px; display: flex; justify-content: space-between; }
-        .method b { color: #ffcc00; }
+        /* Header & Banner */
+        .header { background: linear-gradient(to right, #1a1a2e, #0f0f1b); padding: 20px; text-align: center; border-bottom: 2px solid #ffcc00; }
+        .header h1 { color: #ffcc00; font-size: 24px; text-transform: uppercase; letter-spacing: 2px; }
 
-        form input { width: 100%; padding: 12px; margin: 10px 0; background: #0d0d1a; border: 1px solid #3f3f5f; border-radius: 8px; color: #fff; box-sizing: border-box; outline: none; }
-        form input:focus { border-color: #ffcc00; }
+        /* Tournament Card */
+        .container { padding: 20px; max-width: 500px; margin: auto; }
+        .tournament-card { background: #16162e; border-radius: 15px; overflow: hidden; margin-bottom: 20px; border: 1px solid #2a2a4a; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .card-img { width: 100%; height: 180px; background: url('https://img.freepik.com/free-vector/gaming-banner-template-with-yellow-details_23-2148647064.jpg'); background-size: cover; background-position: center; }
+        .card-content { padding: 15px; }
+        .card-content h3 { color: #ffcc00; margin-bottom: 10px; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 14px; margin-bottom: 15px; }
+        .info-item { background: #1f1f3d; padding: 8px; border-radius: 5px; border-bottom: 2px solid #ffcc00; }
+
+        /* Join Button */
+        .join-btn { width: 100%; padding: 12px; background: linear-gradient(45deg, #ffcc00, #ff9900); border: none; border-radius: 8px; color: #000; font-weight: bold; font-size: 16px; cursor: pointer; }
+
+        /* Modal / Pop-up (Hidden by default) */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 100; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: #16162e; padding: 25px; border-radius: 15px; width: 100%; max-width: 400px; position: relative; border: 1px solid #ffcc00; }
+        .close-btn { position: absolute; top: 10px; right: 15px; font-size: 25px; color: #ffcc00; cursor: pointer; }
+
+        /* Payment Section inside Modal */
+        .payment-box { background: #1f1f3d; padding: 10px; border-radius: 8px; margin: 15px 0; text-align: left; border-left: 4px solid #ffcc00; }
+        input { width: 100%; padding: 12px; margin: 10px 0; background: #0d0d1a; border: 1px solid #3f3f5f; border-radius: 8px; color: #fff; outline: none; box-sizing: border-box; }
+        input:focus { border-color: #ffcc00; }
+        .submit-btn { width: 100%; padding: 12px; background: #28a745; border: none; border-radius: 8px; color: #fff; font-weight: bold; cursor: pointer; margin-top: 10px; }
         
-        button { width: 100%; padding: 14px; background: linear-gradient(45deg, #ffcc00, #ff9900); border: none; border-radius: 8px; color: #000; font-weight: bold; font-size: 16px; cursor: pointer; transition: 0.3s; margin-top: 10px; }
-        button:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255, 204, 0, 0.3); }
-
-        .telegram-link { display: inline-block; margin-top: 25px; color: #0088cc; text-decoration: none; font-weight: bold; font-size: 15px; border: 1px solid #0088cc; padding: 8px 20px; border-radius: 50px; transition: 0.3s; }
-        .telegram-link:hover { background: #0088cc; color: #fff; }
+        .footer-support { text-align: center; margin-top: 30px; }
+        .tg-link { color: #0088cc; text-decoration: none; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h2>ডিপোজিট সেকশন</h2>
-        <p>নিচের নম্বরে টাকা পাঠিয়ে ফর্মটি সাবমিট করুন</p>
+    <div class="header">
+        <h1>Crystal Gaming</h1>
+    </div>
 
-        <div class="payment-methods">
-            <div class="method"><span>বিকাশ (Personal):</span> <b>01941063121</b></div>
-            <div class="method"><span>নগদ (Personal):</span> <b>01604192939</b></div>
+    <div class="container">
+        <!-- Tournament Card 1 -->
+        <div class="tournament-card">
+            <div class="card-img"></div>
+            <div class="card-content">
+                <h3>Free Fire Solo Battle</h3>
+                <div class="info-grid">
+                    <div class="info-item">🏆 প্রাইজ: ৫০০ টাকা</div>
+                    <div class="info-item">🎟️ এন্ট্রি: ৫০ টাকা</div>
+                    <div class="info-item">🕒 সময়: ৯:০০ PM</div>
+                    <div class="info-item">🗺️ ম্যাপ: বারমুডা</div>
+                </div>
+                <button class="join-btn" onclick="openModal()">JOIN NOW</button>
+            </div>
         </div>
 
-        <form>
-            <input type="text" placeholder="ইউজার আইডি / গেম নেম" required>
-            <input type="number" placeholder="আপনার ফোন নম্বর" required>
-            <input type="number" placeholder="টাকার পরিমাণ" required>
-            <input type="text" placeholder="ট্রানজেকশন আইডি (TxID)" required>
-            <button type="button" onclick="alert('আপনার রিকোয়েস্ট পাঠানো হয়েছে। কিছুক্ষণ অপেক্ষা করুন।')">ডিপোজিট রিকোয়েস্ট পাঠান</button>
-        </form>
-
-        <a href="https://t.me/miafd150" target="_blank" class="telegram-link">
-            💬 সরাসরি টেলিগ্রাম সাপোর্ট
-        </a>
+        <div class="footer-support">
+            যেকোনো সমস্যায় যোগাযোগ করুন: <br>
+            <a href="https://t.me/miafd150" class="tg-link">💬 @miafd150 (Telegram Support)</a>
+        </div>
     </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 style="color: #ffcc00;">ডিপোজিট ও রেজিস্ট্রেশন</h2>
+            <div class="payment-box">
+                <p>বিকাশ: <b>01941063121</b></p>
+                <p>নগদ: <b>01604192939</b></p>
+            </div>
+            <form>
+                <input type="text" placeholder="ইউজার আইডি (Game Name)" required>
+                <input type="number" placeholder="কত টাকা পাঠিয়েছেন" required>
+                <input type="text" placeholder="ট্রানজেকশন আইডি (TxID)" required>
+                <button type="button" class="submit-btn" onclick="alert('আপনার তথ্য জমা হয়েছে। এডমিন চেক করে আপনাকে জয়েন করাবে।')">SUBMIT PAYMENT</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openModal() { document.getElementById('paymentModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('paymentModal').style.display = 'none'; }
+        // স্ক্রিনের বাইরে ক্লিক করলে বন্ধ হবে
+        window.onclick = function(event) {
+            let modal = document.getElementById('paymentModal');
+            if (event.target == modal) { modal.style.display = 'none'; }
+        }
+    </script>
 
 </body>
 </html>
