@@ -25,11 +25,7 @@
         .nav-item.active { color: #ffcc00; }
         .history-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 12px; }
         .history-table td, th { padding: 10px; border-bottom: 1px solid #2a2a4a; text-align: left; }
-        .history-table th { color: #ffcc00; }
-        .status-success { color: #28a745; }
-        .status-debit { color: #ff4444; }
         #loader { display: none; text-align: center; margin: 10px 0; color: #ffcc00; }
-        .flex-btns { display: flex; gap: 10px; }
     </style>
 </head>
 <body>
@@ -50,66 +46,65 @@
 
         <div id="wallet" class="section">
             <div class="card">
-                <h3 style="color:#ffcc00; margin-bottom:15px;">ওয়ালেট ম্যানেজমেন্ট</h3>
-                <div class="flex-btns">
+                <h3 style="color:#ffcc00; margin-bottom:15px;">ওয়ালেট</h3>
+                <div style="display:flex; gap:10px;">
                     <button class="btn btn-deposit" onclick="showForm('depForm')">Deposit</button>
                     <button class="btn btn-withdraw" onclick="showForm('withForm')">Withdraw</button>
                 </div>
 
-                <div id="depForm" style="display:none; margin-top:20px; border-top: 1px solid #333; padding-top:10px;">
+                <div id="depForm" style="display:none; margin-top:20px;">
                     <h4>টাকা জমা দিন (Deposit)</h4>
                     <div style="background:#0b0b1a; padding:10px; border-radius:8px; margin:10px 0; border:1px solid #ffcc00;">
-                        <p style="font-size:13px;">বিকাশ (Personal): <b>01941063121</b></p>
-                        <p style="font-size:13px;">নগদ (Personal): <b>01604192939</b></p>
-                        <p style="font-size:11px; color:#aaa; margin-top:5px;">*টাকা পাঠিয়ে TrxID নিচে দিন।</p>
+                        <p>বিকাশ (Personal): <b>01941063121</b></p>
+                        <p>নগদ (Personal): <b>01604192939</b></p>
                     </div>
                     <input type="number" id="depAmount" placeholder="টাকার পরিমাণ">
                     <input type="text" id="depTrx" placeholder="Transaction ID (TrxID)">
-                    <button class="btn btn-deposit" onclick="handleWalletAction('Deposit')">Confirm Deposit</button>
+                    <button class="btn btn-deposit" onclick="handleWalletAction('Deposit')">Confirm & Telegram</button>
                 </div>
 
-                <div id="withForm" style="display:none; margin-top:20px; border-top: 1px solid #333; padding-top:10px;">
+                <div id="withForm" style="display:none; margin-top:20px;">
                     <h4>টাকা উত্তোলন (Withdraw)</h4>
-                    <p style="font-size:12px; color:#ff4444; margin-bottom:10px;">* সর্বনিম্ন উইথড্র ১০০ টাকা।</p>
+                    <p style="font-size:12px; color:#ff4444;">* সর্বনিম্ন উইথড্র ১০০ টাকা।</p>
                     <input type="number" id="withAmount" placeholder="টাকার পরিমাণ (Min: 100)">
                     <input type="text" id="withNumber" placeholder="যে নম্বরে টাকা নিবেন">
-                    <button class="btn btn-withdraw" onclick="handleWalletAction('Withdraw')">Request Withdraw</button>
+                    <button class="btn btn-withdraw" onclick="handleWalletAction('Withdraw')">Withdraw Request</button>
                 </div>
             </div>
         </div>
 
         <div id="profile" class="section">
             <div id="loginForm" class="card">
-                <h3>লগইন করুন</h3>
+                <h3>লগইন প্রোফাইল</h3>
                 <input type="text" id="lIGN" placeholder="গেম আইডি (IGN)">
                 <input type="password" id="lPIN" placeholder="৪ সংখ্যার পিন">
-                <button class="btn btn-check" onclick="login()">লগইন</button>
-                <p style="text-align:center; margin-top:15px; font-size:12px;">অ্যাকাউন্ট নেই? <a href="javascript:void(0)" onclick="toggleAuth(true)" style="color:#ffcc00">রেজিস্ট্রেশন করুন</a></p>
+                <button class="btn btn-check" onclick="login()">লগইন করুন</button>
+                <p onclick="toggleAuth(true)" style="text-align:center; margin-top:15px; cursor:pointer; color:#ffcc00;">নতুন অ্যাকাউন্ট রেজিস্ট্রেশন</p>
             </div>
 
             <div id="regForm" class="card" style="display:none;">
-                <h3>নতুন অ্যাকাউন্ট</h3>
+                <h3>রেজিস্ট্রেশন</h3>
                 <input type="text" id="rIGN" placeholder="গেম আইডি">
                 <input type="number" id="rPH" placeholder="ফোন নম্বর">
                 <input type="password" id="rPIN" placeholder="পিন সেট করুন">
-                <button class="btn btn-join" onclick="register()">সাবমিট</button>
-                <p style="text-align:center; margin-top:15px; font-size:12px;"><a href="javascript:void(0)" onclick="toggleAuth(false)" style="color:#aaa">লগইন পেজে ফিরে যান</a></p>
+                <button class="btn btn-join" onclick="register()">সাবমিট করুন</button>
+                <p onclick="toggleAuth(false)" style="text-align:center; margin-top:15px; cursor:pointer;">লগইন পেজে ফিরে যান</p>
             </div>
 
             <div id="loader"><i class="fas fa-spinner fa-spin"></i> প্রসেস হচ্ছে...</div>
 
             <div id="userDash" style="display:none;">
                 <div class="card" style="border: 1px solid #ffcc00;">
-                    <h4 id="uName" style="color:#ffcc00"></h4>
-                    <div id="uRoom" style="margin-top:10px; font-size:13px; color:#aaa;"></div>
+                    <h4 id="uName"></h4>
+                    <p id="uRoom" style="font-size:13px; color:#aaa; margin-top:5px;"></p>
                 </div>
-                <h4 style="margin-top:20px; color:#ffcc00">ইতিহাস (History)</h4>
+                <h4 style="margin-top:20px; color:#ffcc00">লেনদেনের ইতিহাস</h4>
                 <div class="card" style="padding: 10px; overflow-x: auto;">
                     <table class="history-table">
-                        <thead><tr><th>বিষয়</th><th>অবস্থা</th><th>টাকা</th></tr></thead>
                         <tbody id="hBody"></tbody>
                     </table>
                 </div>
+                <button class="btn" style="background:#333; color:#fff;" onclick="logout()">লগ আউট</button>
             </div>
         </div>
     </div>
@@ -121,10 +116,13 @@
     </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwrdAG6IV6GFooJ8ZgNhrE_8L8c4|n4_JOpOPe6ledSuOs6vYKPxzJe7qMVEpLmBoiY2VQ/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwrdAG6IV6GFooJ8ZgNhrE_8L8c4n4_JOpOPe6ledSuOs6vYKPxzJe7qMVEpLmBoiY2VQ/exec';
         const SHEET_ID = '1CjM5ATkGzSGQpilbxecg3urDniu1wqyo5MhNNH2WJ2g';
         let walletBalance = 0;
-        let loggedInUser = null;
+        let currentUser = JSON.parse(localStorage.getItem('crystalSession')) || null;
+
+        // পেজ লোড হওয়ার পর সেশন চেক
+        window.onload = () => { if(currentUser) login(true); };
 
         function tab(id, el) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -144,32 +142,70 @@
             document.getElementById('loginForm').style.display = reg ? 'none' : 'block';
         }
 
-        async function login() {
-            let ign = document.getElementById('lIGN').value.trim();
-            let pin = document.getElementById('lPIN').value.trim();
-            if(!ign || !pin) return alert("আইডি ও পিন দিন");
+        async function login(isAuto = false) {
+            let ign = isAuto ? currentUser.ign : document.getElementById('lIGN').value.trim();
+            let pin = isAuto ? currentUser.pin : document.getElementById('lPIN').value.trim();
+            if(!ign || !pin) return;
+
             document.getElementById('loader').style.display = 'block';
             try {
                 const res = await fetch(`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`);
                 const txt = await res.text();
                 const json = JSON.parse(txt.substring(47, txt.length - 2));
                 let found = false;
+
                 json.table.rows.forEach(r => {
                     if(r.c[0] && r.c[0].v.toLowerCase() == ign.toLowerCase() && r.c[5].v == pin) {
                         walletBalance = parseFloat(r.c[1].v);
-                        loggedInUser = { ign: r.c[0].v, pin: pin };
+                        localStorage.setItem('crystalSession', JSON.stringify({ign, pin}));
+                        currentUser = {ign, pin};
                         document.getElementById('displayBalance').innerText = "৳ " + walletBalance;
                         document.getElementById('uName').innerText = "স্বাগতম, " + r.c[0].v;
-                        document.getElementById('uRoom').innerHTML = `রুম আইডি: ${r.c[2]?r.c[2].v:'Wait'} | পাসওয়ার্ড: ${r.c[3]?r.c[3].v:'Wait'}`;
+                        document.getElementById('uRoom').innerHTML = `রুম: ${r.c[2]?r.c[2].v:'অপেক্ষা করুন'} | পাস: ${r.c[3]?r.c[3].v:'অপেক্ষা করুন'}`;
                         document.getElementById('userDash').style.display = 'block';
                         document.getElementById('loginForm').style.display = 'none';
                         loadHistory(ign);
                         found = true;
                     }
                 });
-                if(!found) alert("ভুল আইডি অথবা পিন!");
-            } catch(e) { alert("নেটওয়ার্ক এরর!"); }
+                if(!found && !isAuto) alert("ভুল আইডি অথবা পিন!");
+            } catch(e) { console.log("Login Error"); }
             document.getElementById('loader').style.display = 'none';
+        }
+
+        async function handleWalletAction(type) {
+            if(!currentUser) return alert("আগে প্রোফাইল থেকে লগইন করুন!");
+            let amount = (type === 'Deposit') ? document.getElementById('depAmount').value : document.getElementById('withAmount').value;
+            let info = (type === 'Deposit') ? document.getElementById('depTrx').value : document.getElementById('withNumber').value;
+            
+            if(type === 'Withdraw' && amount < 100) return alert("সর্বনিম্ন ১০০ টাকা উইথড্র করা যাবে।");
+            if(!amount || !info) return alert("সব তথ্য পূরণ করুন!");
+
+            document.getElementById('loader').style.display = 'block';
+            try {
+                await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: type.toLowerCase(), ign: currentUser.ign, amount, info }) });
+                
+                if(type === 'Deposit') {
+                    // টেলিগ্রামে মেসেজ পাঠানো
+                    window.location.href = `https://t.me/miafd150?text=Deposit Request:%0AID: ${currentUser.ign}%0AAmount: ${amount}%0ATrxID: ${info}`;
+                } else {
+                    alert("উইথড্র রিকোয়েস্ট সফল হয়েছে!");
+                    location.reload();
+                }
+            } catch(e) { alert("সার্ভার সমস্যা!"); }
+            document.getElementById('loader').style.display = 'none';
+        }
+
+        async function joinGame() {
+            if(!currentUser || walletBalance < 50) return alert("পর্যাপ্ত ব্যালেন্স নেই অথবা লগইন নেই!");
+            if(!confirm("আপনার ব্যালেন্স থেকে ৫০ টাকা কাটা হবে। নিশ্চিত?")) return;
+
+            document.getElementById('loader').style.display = 'block';
+            try {
+                await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: "join", ign: currentUser.ign, pin: currentUser.pin }) });
+                alert("জয়েন রিকোয়েস্ট সফল!");
+                setTimeout(() => login(true), 2000); // অটো রিফ্রেশ ডাটা
+            } catch(e) { alert("Error!"); }
         }
 
         async function loadHistory(ign) {
@@ -178,55 +214,29 @@
                 const logs = await res.json();
                 let html = '';
                 logs.forEach(l => {
-                    html += `<tr><td>${l.type}</td><td class="${l.status==='Debit'||l.status==='Pending'?'status-debit':'status-success'}">${l.status}</td><td>৳ ${l.amount}</td></tr>`;
+                    html += `<tr><td>${l.type}</td><td style="color:${l.status=='Debit'||l.status=='Pending'?'#ff4444':'#28a745'}">${l.status}</td><td>৳ ${l.amount}</td></tr>`;
                 });
                 document.getElementById('hBody').innerHTML = html;
             } catch(e) {}
         }
 
-        async function handleWalletAction(type) {
-            if(!loggedInUser) return alert("আগে লগইন করুন!");
-            let amount, info;
-            if(type === 'Deposit') {
-                amount = document.getElementById('depAmount').value;
-                info = document.getElementById('depTrx').value;
-            } else {
-                amount = document.getElementById('withAmount').value;
-                info = document.getElementById('withNumber').value;
-                if(parseFloat(amount) < 100) return alert("সর্বনিম্ন ১০০ টাকা উইথড্র করা যাবে।");
-                if(parseFloat(amount) > walletBalance) return alert("ব্যালেন্স নেই!");
-            }
-            if(!amount || !info) return alert("সব তথ্য দিন!");
-            document.getElementById('loader').style.display = 'block';
-            try {
-                await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: type.toLowerCase(), ign: loggedInUser.ign, amount: amount, info: info }) });
-                alert(type + " রিকোয়েস্ট সফল! এডমিন ২-১০ মিনিটের মধ্যে এপ্রুভ করবে।");
-                location.reload();
-            } catch(e) { alert("সার্ভার এরর!"); }
-        }
-
-        async function joinGame() {
-            if(!loggedInUser || walletBalance < 50) return alert("লগইন করুন অথবা পর্যাপ্ত ব্যালেন্স নেই!");
-            if(!confirm("৫০ টাকা কাটা হবে। নিশ্চিত?")) return;
-            document.getElementById('loader').style.display = 'block';
-            try {
-                await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: "join", ign: loggedInUser.ign, pin: loggedInUser.pin }) });
-                alert("জয়েন সফল! ২ সেকেন্ড পর আপডেট হবে।");
-                setTimeout(login, 2500);
-            } catch(e) { alert("সার্ভার এরর!"); }
+        function logout() {
+            localStorage.removeItem('crystalSession');
+            location.reload();
         }
 
         async function register() {
             let ign = document.getElementById('rIGN').value.trim();
             let ph = document.getElementById('rPH').value.trim();
             let pin = document.getElementById('rPIN').value.trim();
-            if(!ign || !ph || !pin) return alert("সব ঘর পূরণ করুন!");
+            if(!ign || !ph || !pin) return alert("সব তথ্য পূরণ করুন");
+
             document.getElementById('loader').style.display = 'block';
             try {
                 await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: "register", ign: ign, phone: ph, pin: pin }) });
                 alert("রেজিস্ট্রেশন সফল! এখন লগইন করুন।");
                 toggleAuth(false);
-            } catch(e) { alert("এরর!"); }
+            } catch(e) { alert("Error!"); }
             document.getElementById('loader').style.display = 'none';
         }
     </script>
