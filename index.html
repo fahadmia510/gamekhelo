@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crystal Gaming | Profile & Registration</title>
+    <title>Crystal Gaming | Tournament Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
@@ -48,13 +48,12 @@
         </div>
 
         <div id="profile" class="section">
-            
             <div id="loginForm" class="auth-card">
                 <h3 style="color:#ffcc00">লগইন করুন</h3>
                 <input type="text" id="loginIGN" placeholder="গেম আইডি (IGN)">
                 <input type="password" id="loginPIN" placeholder="৪ সংখ্যার পিন">
                 <button class="btn btn-check" onclick="loginUser()">ব্যালেন্স চেক করুন</button>
-                <p style="margin-top:15px; font-size: 12px;">অ্যাকাউন্ট নেই? <a href="javascript:void(0)" onclick="showAuth('reg')" style="color:#ffcc00">এখানে রেজিস্ট্রেশন করুন</a></p>
+                <p style="margin-top:15px; font-size: 12px;">অ্যাকাউন্ট নেই? <a href="javascript:void(0)" onclick="showAuth('reg')" style="color:#ffcc00">রেজিস্ট্রেশন করুন</a></p>
             </div>
 
             <div id="regForm" class="auth-card" style="display:none;">
@@ -68,14 +67,13 @@
 
             <div id="loader"></div>
             <div id="roomInfoBox"></div>
-
         </div>
 
         <div id="support" class="section">
             <div style="text-align:center; margin-top:50px">
                 <i class="fab fa-telegram" style="font-size:60px; color:#0088cc"></i>
-                <h3>টেলিগ্রাম সাপোর্ট</h3>
-                <a href="https://t.me/miafd150" class="btn btn-check" style="display:block; text-decoration:none; margin-top:20px">Contact Now</a>
+                <h3 style="margin-top:15px">সহায়তার জন্য মেসেজ দিন</h3>
+                <a href="https://t.me/miafd150" class="btn btn-check" style="display:block; text-decoration:none; margin-top:20px">Telegram Support</a>
             </div>
         </div>
 
@@ -90,6 +88,7 @@
     <script>
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby2wOkwM2YJQvBeD7ThCxCelOy3Nzt5I9ORUk670nXyMFR6gCIZhdBbQz61AgLS69OCyg/exec';
         const SHEET_ID = '1CjM5ATkGzSGQpilbxecg3urDniu1wqyo5MhNNH2WJ2g';
+        let currentWalletBalance = 0; // ব্যালেন্স মনে রাখার জন্য
 
         function showTab(id, el) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -101,25 +100,6 @@
         function showAuth(type) {
             document.getElementById('loginForm').style.display = type === 'login' ? 'block' : 'none';
             document.getElementById('regForm').style.display = type === 'reg' ? 'block' : 'none';
-        }
-
-        async function registerUser() {
-            let ign = document.getElementById('regIGN').value.trim();
-            let phone = document.getElementById('regPhone').value.trim();
-            let pin = document.getElementById('regPIN').value.trim();
-            if(!ign || !phone || !pin) return alert("সব তথ্য দিন");
-
-            document.getElementById('loader').style.display = 'block';
-            try {
-                await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: JSON.stringify({ action: "register", ign: ign, phone: phone, pin: pin })
-                });
-                alert("রেজিস্ট্রেশন সফল! এখন লগইন করুন।");
-                showAuth('login');
-            } catch(e) { alert("Error!"); }
-            document.getElementById('loader').style.display = 'none';
         }
 
         async function loginUser() {
@@ -138,14 +118,14 @@
                 
                 let found = false;
                 for (let row of rows) {
-                    // A: IGN, B: Balance, C: Room, D: Pass, F: PIN (Index 5)
                     if (row.c[0] && row.c[0].v.toString().toLowerCase() === ign.toLowerCase()) {
                         if(row.c[5] && row.c[5].v.toString() === pin) {
-                            document.getElementById('displayBalance').innerText = "৳ " + row.c[1].v;
+                            currentWalletBalance = parseFloat(row.c[1].v); 
+                            document.getElementById('displayBalance').innerText = "৳ " + currentWalletBalance;
                             document.getElementById('roomInfoBox').style.display = 'block';
-                            document.getElementById('roomInfoBox').innerHTML = `<h4>আপনার তথ্য:</h4><p>Room ID: ${row.c[2].v}</p><p>Password: ${row.c[3].v}</p>`;
+                            document.getElementById('roomInfoBox').innerHTML = `<h4>আপনার তথ্য:</h4><p>Room ID: ${row.c[2] ? row.c[2].v : 'Wait'}</p><p>Password: ${row.c[3] ? row.c[3].v : 'Wait'}</p>`;
                             found = true;
-                            alert("লগইন সফল!");
+                            alert("লগইন সফল! ব্যালেন্স: ৳" + currentWalletBalance);
                         } else {
                             alert("ভুল পিন!");
                             found = true;
@@ -161,22 +141,20 @@
         async function joinGame() {
             let ign = document.getElementById('loginIGN').value.trim();
             let pin = document.getElementById('loginPIN').value.trim();
-            if(!ign || !pin) return alert("আগে প্রোফাইল সেকশনে গিয়ে লগইন করুন!");
+            
+            if(!ign || !pin) {
+                alert("আগে প্রোফাইল সেকশনে গিয়ে লগইন করুন!");
+                showTab('profile', document.querySelectorAll('.nav-item')[1]);
+                return;
+            }
 
-            if(!confirm("৫০ টাকা কাটা হবে। আপনি কি নিশ্চিত?")) return;
+            if(currentWalletBalance < 50) {
+                alert("আপনার ব্যালেন্স পর্যাপ্ত নয় (৳ ৫০ প্রয়োজন)!");
+                return;
+            }
+
+            if(!confirm(`আইডি: ${ign}\n৫০ টাকা কাটা হবে। আপনি কি নিশ্চিত?`)) return;
 
             document.getElementById('loader').style.display = 'block';
             try {
-                await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: JSON.stringify({ action: "join", ign: ign, pin: pin })
-                });
-                alert("রিকোয়েস্ট পাঠানো হয়েছে। ১ সেকেন্ড পর রিফ্রেশ হবে।");
-                setTimeout(loginUser, 1500);
-            } catch(e) { alert("Error!"); }
-            document.getElementById('loader').style.display = 'none';
-        }
-    </script>
-</body>
-</html>
+                await fetch(SCRIPT_URL,
